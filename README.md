@@ -1,4 +1,4 @@
-# 💸 Financial Health Predictor
+# 💸 Credit Score classification
 
 A machine learning-based web app that predicts a user's financial risk score based on various banking and income-related parameters.
 
