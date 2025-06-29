@@ -7,9 +7,7 @@ A machine learning-based web app that predicts a user's financial risk score bas
 - Predicts based on user attributes such as income, credit history, and debt.
 - Uses **K-Nearest Neighbors (KNN)** algorithm for prediction.
 - Applied **Data Preprocessing**, **Feature Engineering**, and **EDA** to refine model performance.
-- Fetches live credit-related visualizations or statistics via APIs (if available).
 - Designed for **static datasets** (no live training).
-- Album covers or visualizations are dynamically fetched via APIs like Spotify (for illustrative add-ons), but audio playback is restricted as per API limitations.
 
 ---
 
@@ -61,6 +59,7 @@ Create a folder and then put index.html inside and then open app.py in vs code o
 Run in termninal "Flask run" Voila your web page will be hosted locally.
 
 ---
+#Preview of page
 ![image alt](https://github.com/Vaman223/Credit-Score-Classification-using-ml/blob/main/Screenshot%202025-06-29%20163950.png?raw=true)
 ![image alt](https://github.com/Vaman223/Credit-Score-Classification-using-ml/blob/main/Screenshot%202025-06-29%20163956.png?raw=true)
 
