@@ -57,6 +57,10 @@ A machine learning-based web app that predicts a user's financial risk score bas
 - Matplotlib / Plotly for visualization
 
 ---
+Create a folder and then put index.html inside and then open app.py in vs code or any other word editor
+Run in termninal "Flask run" Voila your web page will be hosted locally.
 
-## 📂 Folder Structure
+---
+![image alt](https://github.com/Vaman223/Credit-Score-Classification-using-ml/blob/main/Screenshot%202025-06-29%20163950.png?raw=true)
+![image alt](https://github.com/Vaman223/Credit-Score-Classification-using-ml/blob/main/Screenshot%202025-06-29%20163956.png?raw=true)
 
