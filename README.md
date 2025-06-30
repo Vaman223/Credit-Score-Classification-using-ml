@@ -1,8 +1,8 @@
-# 💸 Credit Score classification
+#  Credit Score classification
 
 A machine learning-based web app that predicts a user's financial risk score based on various banking and income-related parameters.
 
-## 🚀 Features
+##  Features
 
 - Predicts based on user attributes such as income, credit history, and debt.
 - Uses **K-Nearest Neighbors (KNN)** algorithm for prediction.
@@ -11,7 +11,7 @@ A machine learning-based web app that predicts a user's financial risk score bas
 
 ---
 
-## 📊 Input Features
+##  Input Features
 
 | Feature                    | Description                         |
 |---------------------------|-------------------------------------|
@@ -28,7 +28,7 @@ A machine learning-based web app that predicts a user's financial risk score bas
 
 ---
 
-## 🧠 Model
+##  Model
 
 - Algorithm: **K-Nearest Neighbors (KNN)**
 - Data: Static CSV dataset
@@ -38,7 +38,7 @@ A machine learning-based web app that predicts a user's financial risk score bas
 
 ---
 
-## 🖼️ Visual Output
+##  Visual Output
 
 - Displays prediction along with user-specific indicators
 - Graphs generated with Matplotlib/Seaborn
@@ -46,7 +46,7 @@ A machine learning-based web app that predicts a user's financial risk score bas
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - Python
 - Pandas, NumPy
