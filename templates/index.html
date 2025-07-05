@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Credit Score Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .floating-element:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 15%;
+            left: 8%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 180px;
+            height: 180px;
+            top: 65%;
+            right: 12%;
+            animation-delay: -2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 90px;
+            height: 90px;
+            top: 85%;
+            left: 25%;
+            animation-delay: -4s;
+        }
+
+        .floating-element:nth-child(4) {
+            width: 150px;
+            height: 150px;
+            top: 25%;
+            right: 35%;
+            animation-delay: -1s;
+        }
+
+        .floating-element:nth-child(5) {
+            width: 60px;
+            height: 60px;
+            top: 45%;
+            left: 15%;
+            animation-delay: -3s;
+        }
+
+        .floating-element:nth-child(6) {
+            width: 110px;
+            height: 110px;
+            top: 10%;
+            right: 20%;
+            animation-delay: -5s;
+        }
+
+        /* Liquid Glass Bubbles */
+        .liquid-bubble {
+            position: absolute;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.05));
+            border-radius: 50%;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: liquidFloat 12s ease-in-out infinite;
+        }
+
+        .liquid-bubble:nth-child(7) {
+            width: 200px;
+            height: 200px;
+            top: 30%;
+            left: 5%;
+            animation-delay: -6s;
+        }
+
+        .liquid-bubble:nth-child(8) {
+            width: 140px;
+            height: 140px;
+            top: 70%;
+            right: 8%;
+            animation-delay: -8s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg) scale(1);
+                opacity: 0.6;
+            }
+            33% {
+                transform: translateY(-30px) rotate(120deg) scale(1.1);
+                opacity: 0.9;
+            }
+            66% {
+                transform: translateY(25px) rotate(240deg) scale(0.9);
+                opacity: 0.4;
+            }
+        }
+
+        @keyframes liquidFloat {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translateY(-40px) translateX(20px) rotate(90deg);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(20px) translateX(-15px) rotate(180deg);
+                opacity: 0.5;
+            }
+            75% {
+                transform: translateY(-20px) translateX(30px) rotate(270deg);
+                opacity: 0.8;
+            }
+        }
+
+        /* Horizontal Layout Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .left-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideLeft 1s ease-out;
+        }
+
+        .right-section {
+            flex: 1.2;
+            animation: slideRight 1s ease-out 0.3s both;
+        }
+
+        .header {
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #a78bfa, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+            line-height: 1.1;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        /* Credit Score Classification Info */
+        .score-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .score-category {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s;
+        }
+
+        .score-category:hover::before {
+            left: 100%;
+        }
+
+        .score-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .score-category h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .score-category p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        .score-good {
+            color: #4ade80;
+            border-left: 4px solid #4ade80;
+        }
+
+        .score-standard {
+            color: #fbbf24;
+            border-left: 4px solid #fbbf24;
+        }
+
+        .score-poor {
+            color: #f87171;
+            border-left: 4px solid #f87171;
+        }
+
+        /* Enhanced Glass Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(25px);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 3rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+        }
+
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1px;
+            bottom: 0;
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            color: white;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            outline: none;
+            position: relative;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-group input:focus {
+            border-color: rgba(167, 139, 250, 0.7);
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(167, 139, 250, 0.2);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .predict-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2, #a78bfa);
+            color: white;
+            border: none;
+            padding: 1.4rem 4rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 220px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .predict-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .predict-btn:hover::before {
+            left: 100%;
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(167, 139, 250, 0.4);
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6, #06b6d4);
+        }
+
+        .predict-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .result-container {
+            margin-top: 2rem;
+            padding: 2.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.1; }
+        }
+
+        .credit-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .score-label {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .score-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .error-message {
+            background: rgba(248, 113, 113, 0.2);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            color: #fca5a5;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .success-message {
+            background: rgba(74, 222, 128, 0.2);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            color: #86efac;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes slideLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .left-section, .right-section {
+                flex: 1;
+            }
+            
+            .header h1 {
+                font-size: 3rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .glass-card {
+                padding: 2rem;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .score-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <!-- Floating Elements -->
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        
+        <!-- Liquid Glass Bubbles -->
+        <div class="liquid-bubble"></div>
+        <div class="liquid-bubble"></div>
+    </div>
+
+    <div class="container">
+        <div class="left-section">
+            <div class="header">
+                <h1>Credit Score Predictor</h1>
+                <p>Advanced AI-powered credit assessment tool using machine learning algorithms. Enter your financial details to get an instant, accurate credit score prediction with detailed analysis.</p>
+            </div>
+
+            <!-- Credit Score Classification Information -->
+            <div class="score-info">
+                <div class="score-category score-good">
+                    <h3>Good</h3>
+                    <p>Excellent creditworthiness with access to premium rates and terms</p>
+                </div>
+                <div class="score-category score-standard">
+                    <h3>Standard</h3>
+                    <p>Fair credit standing with moderate lending options available</p>
+                </div>
+                <div class="score-category score-poor">
+                    <h3>Poor</h3>
+                    <p>Limited credit options with higher interest rates required</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-section">
+            <div class="glass-card">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="{{ 'error-message' if category == 'error' else 'success-message' }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('predict') }}">
+                    <div class="form-grid">
+                        {% for field in [
+                            'annual_income', 'monthly_salary', 'num_bank_accounts', 'num_credit_cards',
+			   'interest_rate', 'num_loans', 'avg_days_delayed', 'num_delayed_payments',
+                           'changed_credit_limit', 'num_credit_inquiries', 'outstanding_debt',
+                           'credit_utilization_ratio', 'credit_history_age', 'total_emi',
+                           'amount_invested', 'monthly_balance'
+
+                        ] %}
+                        <div class="form-group">
+                            <label for="{{ field }}">{{ field.replace('_', ' ').title() }}</label>
+                            <input type="number" name="{{ field }}" id="{{ field }}" required 
+                                value="{{ request.form.get(field, '') }}" 
+                                placeholder="Enter {{ field.replace('_', ' ').lower() }}" />
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="btn-container">
+                        <button type="submit" class="predict-btn">Predict Credit Score</button>
+                    </div>
+                </form>
+
+                {% if prediction %}
+                <div class="result-container">
+                    <div class="credit-score {{ score_class }}">{{ prediction|upper }}</div>
+                    <div class="score-label">Your Credit Score Category</div>
+                    <div class="score-description">{{ score_description }}</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced form interactions
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+                this.parentElement.style.transition = 'transform 0.3s ease';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+            
+            input.addEventListener('input', function() {
+                this.style.borderColor = 'rgba(167, 139, 250, 0.5)';
+            });
+        });
+
+        // Form validation with enhanced visual feedback
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const inputs = this.querySelectorAll('input[required]');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    input.style.borderColor = 'rgba(248, 113, 113, 0.7)';
+                    input.style.boxShadow = '0 0 0 3px rgba(248, 113, 113, 0.2)';
+                    isValid = false;
+                    
+                    // Reset error state after 3 seconds
+                    setTimeout(() => {
+                        input.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                        input.style.boxShadow = 'none';
+                    }, 3000);
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                // Add shake animation to form
+                this.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    this.style.animation = '';
+                }, 500);
+            }
+        });
+
+        // Add shake animation for validation errors
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Interactive score categories
+        document.querySelectorAll('.score-category').forEach(category => {
+            category.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            category.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
